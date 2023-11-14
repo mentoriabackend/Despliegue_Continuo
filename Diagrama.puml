@@ -1,0 +1,240 @@
+@startuml
+class com.example.Proyecto.Integrador.Security.WebSecurityConfig {
++ SecurityFilterChain securityFilterChain(HttpSecurity)
++ UserDetailsService userDetailsService()
++ PasswordEncoder passwordEncoder()
+}
+class com.example.Proyecto.Integrador.Dto.ClienteDto {
+- Integer cedula
+- String nombre
+- String apellido
+- Long celular
+- String correoElectronico
+- String direccion
+- String ciudad
++ Integer getCedula()
++ void setCedula(Integer)
++ String getNombre()
++ void setNombre(String)
++ String getApellido()
++ void setApellido(String)
++ Long getCelular()
++ void setCelular(Long)
++ String getCorreoElectronico()
++ void setCorreoElectronico(String)
++ String getDireccion()
++ void setDireccion(String)
++ String getCiudad()
++ void setCiudad(String)
+}
+class com.example.Proyecto.Integrador.Service.EmpleadoService {
+- EmpleadoRepository empleadoRepository
++ Empleado crearEmpleado(Empleado)
++ Empleado actualizarEmpleado(Empleado)
++ Boolean eliminarEmpleado(Integer)
++ Optional<Empleado> obtenerEmpleadoCedula(Integer)
+}
+enum com.example.Proyecto.Integrador.Model.EstadoEnvioEnum {
++  RECIBIDO
++  RUTA
++  ENTREGADO
+- String name
++ String getName()
+}
+class com.example.Proyecto.Integrador.Controller.ClienteController {
+- ClienteService clienteService
++ Cliente crearCliente(Cliente)
++ Cliente actualizarEmpleado(Cliente)
++ String eliminarCliente(Integer)
++ Optional<Cliente> obtenerClienteCedula(Integer)
+}
+class com.example.Proyecto.Integrador.Exception.ApiRequestException {
+}
+class com.example.Proyecto.Integrador.Controller.EnvioController {
+- EnvioService envioService
++ EnvioDtoRequest crearEnvio(EnvioDto)
++ EnvioDto obtenerNumeroGuia(Integer)
++ EnvioDtoRequest actualizarEstadoPaquete(EnvioDtoUpdate)
++ List<Envio> filtrarPorEstado(Integer,EstadoEnvioEnum)
+}
+class com.example.Proyecto.Integrador.ProyectoIntegradorApplication {
++ {static} void main(String[])
+}
+class com.example.Proyecto.Integrador.Dto.EnvioDtoRequest {
+- Integer numGuia
+- EstadoEnvioEnum estadoEnvio
+}
+class com.example.Proyecto.Integrador.Configurer.SwaggerConfig {
+~ Docket ap1()
+- ApiInfo apiInfo()
+}
+interface com.example.Proyecto.Integrador.Repository.EmpleadoRepository {
+}
+enum com.example.Proyecto.Integrador.Model.TipoPaqueteEnum {
++  LIVIANO
++  MEDIANO
++  GRANDE
+- String name
++ String getName()
+}
+class com.example.Proyecto.Integrador.Controller.EmpleadoController {
+- EmpleadoService empleadoService
++ Empleado crearEmpleado(Empleado)
++ Empleado actualizarEmpleado(Empleado)
++ String eliminarEmpleado(Integer)
++ Optional<Empleado> obtenerEmpleadoCedula(Integer)
+}
+class com.example.Proyecto.Integrador.Dto.EmpleadoDto {
+- Integer cedula
+- String nombre
+- String apellido
+- Long celular
+- String correoElectronico
+- String direccion
+- String ciudad
+- LocalDate antiguedad
+- String tipoSangre
+- String tipoEmpleado
++ Integer getCedula()
++ void setCedula(Integer)
++ String getNombre()
++ void setNombre(String)
++ String getApellido()
++ void setApellido(String)
++ Long getCelular()
++ void setCelular(Long)
++ String getCorreoElectronico()
++ void setCorreoElectronico(String)
++ String getDireccion()
++ void setDireccion(String)
++ String getCiudad()
++ void setCiudad(String)
++ LocalDate getAntiguedad()
++ void setAntiguedad(LocalDate)
++ String getTipoSangre()
++ void setTipoSangre(String)
++ String getTipoEmpleado()
++ void setTipoEmpleado(String)
+}
+class com.example.Proyecto.Integrador.Exception.ApiExceptionHandler {
++ ResponseEntity<String> clienteRequestException(ApiRequestException)
+}
+interface com.example.Proyecto.Integrador.Repository.EnvioRepository {
++ List<Envio> envioPorEstado(String)
+}
+class com.example.Proyecto.Integrador.Model.Empleado {
+- {static} long serialVersionUID
+- LocalDate antiguedad
+- String tipoSangre
+- TipoEmpleadoEnum tipoEmpleado
+}
+class com.example.Proyecto.Integrador.Dto.PaqueteDto {
+- Double peso
+- Integer valorDeclarado
++ Double getPeso()
++ Integer getValorDeclarado()
++ void setPeso(Double)
++ void setValorDeclarado(Integer)
+}
+class com.example.Proyecto.Integrador.Dto.EnvioDtoUpdate {
+- Integer cedula
+- Integer numGuia
+- EstadoEnvioEnum estadoEnvio
+}
+class com.example.Proyecto.Integrador.Model.Paquete {
+- {static} long serialVersionUID
+- Integer idPaquete
+- TipoPaqueteEnum tipoPaquete
+- Double peso
+- Integer valorDeclarado
++ {static} TipoPaqueteEnum asignarTipoPaquete(Double)
+}
+class com.example.Proyecto.Integrador.Model.Persona {
+- Integer cedula
+- String nombre
+- String apellido
+- Long celular
+- String correoElectronico
+- String direccion
+- String ciudad
+}
+class com.example.Proyecto.Integrador.Service.EnvioService {
+- EnvioRepository envioRepository
+- ClienteRepository clienteRepository
+- PaqueteRepository paqueteRepository
+- EmpleadoRepository empleadoRepository
++ EnvioDtoRequest crearEnvio(EnvioDto)
++ String asignarHora()
++ EnvioDto obtenerNumeroGuia(Integer)
++ EnvioDtoRequest actualizarEstadoPaquete(EnvioDtoUpdate)
++ List<Envio> filtrarPorEstado(EstadoEnvioEnum,Integer)
+}
+class com.example.Proyecto.Integrador.Model.ErrorResponse {
+- String message
+- int code
+}
+interface com.example.Proyecto.Integrador.Repository.ClienteRepository {
+}
+class com.example.Proyecto.Integrador.Model.Envio {
+- {static} long serialVersionUID
+- Integer numGuia
+- Cliente cliente
+- String ciudadOrigen
+- String ciudadDestino
+- String direccionDestino
+- String nombrePersona
+- Integer numeroPersona
+- String horaEntrega
+- EstadoEnvioEnum estadoEnvio
+- Integer valorEnvio
+- Paquete paquete
++ {static} Integer asignarPrecioEnvio(TipoPaqueteEnum)
+}
+class com.example.Proyecto.Integrador.Service.ClienteService {
+- ClienteRepository clienteRepository
++ Cliente crearCliente(Cliente)
++ Cliente actualizarCliente(Cliente)
++ Boolean eliminarCliente(Integer)
++ Optional<Cliente> obtenerClienteCedula(Integer)
+}
+enum com.example.Proyecto.Integrador.Model.TipoEmpleadoEnum {
++  REPARTIDOR
++  COORDINADOR
+- String name
++ String getName()
+}
+interface com.example.Proyecto.Integrador.Repository.PaqueteRepository {
+}
+class com.example.Proyecto.Integrador.Model.Cliente {
+}
+class com.example.Proyecto.Integrador.Dto.EnvioDto {
+- Integer cedula
+- String nombreRemitente
+- String ciudadOrigen
+- String ciudadDestino
+- String direccionDestino
+- String nombrePersona
+- Integer numeroPersona
+- Double peso
+- EstadoEnvioEnum estadoEnvio
+- Integer valorDeclarado
+- Integer valorEnvio
+}
+
+
+java.io.Serializable <|.. com.example.Proyecto.Integrador.Dto.ClienteDto
+com.example.Proyecto.Integrador.Exception.RuntimeException <|-- com.example.Proyecto.Integrador.Exception.ApiRequestException
+org.springframework.data.jpa.repository.JpaRepository <|-- com.example.Proyecto.Integrador.Repository.EmpleadoRepository
+java.io.Serializable <|.. com.example.Proyecto.Integrador.Dto.EmpleadoDto
+org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler <|-- com.example.Proyecto.Integrador.Exception.ApiExceptionHandler
+org.springframework.data.jpa.repository.JpaRepository <|-- com.example.Proyecto.Integrador.Repository.EnvioRepository
+java.io.Serializable <|.. com.example.Proyecto.Integrador.Model.Empleado
+com.example.Proyecto.Integrador.Model.Persona <|-- com.example.Proyecto.Integrador.Model.Empleado
+java.io.Serializable <|.. com.example.Proyecto.Integrador.Dto.PaqueteDto
+java.io.Serializable <|.. com.example.Proyecto.Integrador.Model.Paquete
+org.springframework.data.jpa.repository.JpaRepository <|-- com.example.Proyecto.Integrador.Repository.ClienteRepository
+java.io.Serializable <|.. com.example.Proyecto.Integrador.Model.Envio
+org.springframework.data.jpa.repository.JpaRepository <|-- com.example.Proyecto.Integrador.Repository.PaqueteRepository
+com.example.Proyecto.Integrador.Model.Persona <|-- com.example.Proyecto.Integrador.Model.Cliente
+java.io.Serializable <|.. com.example.Proyecto.Integrador.Dto.EnvioDto
+@enduml
